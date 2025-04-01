@@ -31,6 +31,4 @@ public class SellerService {
     @Autowired
     private VeterinarianPort veterinarianPort;
 
-    //TODO: Idk xD
-
 }

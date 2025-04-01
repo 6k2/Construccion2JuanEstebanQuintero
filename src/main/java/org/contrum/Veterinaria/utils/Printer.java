@@ -1,6 +1,7 @@
 package org.contrum.Veterinaria.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -43,6 +44,12 @@ public class Printer {
 
     public static void print(String message) {
         System.out.println(parseLine(message));
+    }
+
+    public static void print(List<String> messages) {
+        for (String msg : messages) {
+            System.out.println(parseLine(msg));
+        }
     }
 
     public static void print(String... messages) {

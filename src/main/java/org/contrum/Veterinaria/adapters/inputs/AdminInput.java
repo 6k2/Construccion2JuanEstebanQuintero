@@ -3,16 +3,21 @@ package org.contrum.Veterinaria.adapters.inputs;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.contrum.Veterinaria.adapters.entities.seller.repository.SellerRepository;
+import org.contrum.Veterinaria.adapters.entities.veterinarian.repository.VeterinarianRepository;
 import org.contrum.Veterinaria.domain.models.Person;
 import org.contrum.Veterinaria.domain.models.Seller;
 import org.contrum.Veterinaria.domain.models.Veterinarian;
 import org.contrum.Veterinaria.domain.services.AdminService;
 import org.contrum.Veterinaria.ports.InputPort;
+import org.contrum.Veterinaria.utils.ConsolePaginator;
 import org.contrum.Veterinaria.utils.Printer;
 import org.contrum.Veterinaria.utils.validators.PersonValidator;
 import org.contrum.Veterinaria.utils.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -26,39 +31,78 @@ public class AdminInput implements InputPort {
     @Autowired
     private AdminService service;
 
-    public void menu() {
+    @Autowired
+    private SellerRepository sellerRepository;
 
+    @Autowired
+    private VeterinarianRepository veterinarianRepository;
+
+    @Autowired
+    private ConsolePaginator consolePaginator;
+
+    public void menu() {
         Printer.print(
-                "<center>Elige una opción",
+                "",
+                "Menu Administrador",
+                "Elige una opción",
+                "",
                 "1. Crear vendedor",
                 "2. Crear medico veterinario",
-                "3. Listar vendedores"
+                "3. Listar vendedores",
+                "4. Listar medicos veterinarios",
+                "X. Volver"
         );
 
-        String choice = Printer.read();
+        String choice = Printer.read().toLowerCase();
         try {
             switch (choice) {
                 case "1": {
                     this.createSeller();
-
-                    Printer.print("\nVendedor registrado con exito!");
+                    Printer.print("\nVendedor registrado con éxito!");
                     break;
                 }
                 case "2": {
                     this.createVeterinarian();
-
-                    Printer.print("\nMedico veterinario registrado con exito!");
+                    Printer.print("\nMédico veterinario registrado con éxito!");
                     break;
                 }
                 case "3": {
-                    Printer.print("Listado de vendedores");
-                    service.getSellers().forEach(seller -> {
-                        Printer.print(seller.getDocument() + " - " + seller.getName() + " role: " + seller.getRole().name());
-                    });
+                    consolePaginator.paginate(
+                            sellerRepository,
+                            seller -> List.of(
+                                    "<border>",
+                                    " Usuario: " + seller.getUser().getUserName() + " (SellerId: "+seller.getSellerId()+")",
+                                    " Nombre: " + seller.getUser().getPerson().getName(),
+                                    " Cédula: " + seller.getUser().getPerson().getDocument(),
+                                    " Edad: " + seller.getUser().getPerson().getAge(),
+                                    "<border>"
+                            ),
+                            "Listado de vendedores",
+                            10
+                    );
                     break;
                 }
+                case "4": {
+                    consolePaginator.paginate(
+                            veterinarianRepository,
+                            vet -> List.of(
+                                    "<border>",
+                                    " Usuario: " + vet.getUser().getUserName() + " (SellerId: "+vet.getVeterinarianId()+")",
+                                    " Nombre: " + vet.getUser().getPerson().getName(),
+                                    " Cédula: " + vet.getUser().getPerson().getDocument(),
+                                    " Edad: " + vet.getUser().getPerson().getAge(),
+                                    "<border>"
+                            ),
+                            "Listado de veterinarios",
+                            10
+                    );
+                    break;
+                }
+                case "x": {
+                    return;
+                }
                 default:
-                    System.out.println("opcion no valida");
+                    System.out.println("Opción no válida");
             }
         } catch (Exception e) {
             e.printStackTrace();

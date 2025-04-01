@@ -7,5 +7,7 @@ public interface PersonPort {
 
     public boolean existPerson(long document);
 
-    public Person findByPersonId(Person person);
+    public Person findByDocument(Person person);
+
+    public Person findByDocument(long document);
 }

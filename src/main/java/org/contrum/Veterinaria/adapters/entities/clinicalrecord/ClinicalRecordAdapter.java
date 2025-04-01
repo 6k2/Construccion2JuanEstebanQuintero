@@ -2,6 +2,7 @@ package org.contrum.Veterinaria.adapters.entities.clinicalrecord;
 
 import org.contrum.Veterinaria.adapters.entities.clinicalrecord.entity.ClinicalRecordEntity;
 import org.contrum.Veterinaria.adapters.entities.clinicalrecord.repository.ClinicalRecordRepository;
+import org.contrum.Veterinaria.adapters.entities.order.entity.OrderEntity;
 import org.contrum.Veterinaria.adapters.entities.pet.entity.PetEntity;
 import org.contrum.Veterinaria.adapters.entities.veterinarian.entity.VeterinarianEntity;
 import org.contrum.Veterinaria.domain.models.ClinicalRecord;
@@ -23,16 +24,15 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
     }
 
     @Override
-    public ClinicalRecord findByClinicalRecordId(ClinicalRecord record) {
-        ClinicalRecordEntity userEntity = repository.findById(this.clinicalRecordAdapter(record));
-        return clinicalRecordAdapter(userEntity);
+    public ClinicalRecord findById(long record) {
+        return repository.findById(record)
+                .map(this::clinicalRecordAdapter)
+                .orElse(null);
     }
 
     public ClinicalRecordEntity clinicalRecordAdapter(ClinicalRecord clinicalRecord) {
         ClinicalRecordEntity clinicalRecordEntity = new ClinicalRecordEntity();
-
         clinicalRecordEntity.setId(clinicalRecord.getId());
-        clinicalRecordEntity.setOrderId(clinicalRecord.getOrderId());
         clinicalRecordEntity.setTimestamp(clinicalRecord.getTimestamp());
 
         VeterinarianEntity veterinarian = new VeterinarianEntity();
@@ -43,6 +43,12 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         pet.setId(clinicalRecord.getPetId());
         clinicalRecordEntity.setPet(pet);
 
+        if (clinicalRecord.getOrderId() != 0) {
+            OrderEntity order = new OrderEntity();
+            order.setId(clinicalRecord.getOrderId());
+            clinicalRecordEntity.setOrder(order);
+        }
+
         clinicalRecordEntity.setReason(clinicalRecord.getReason());
         clinicalRecordEntity.setSymptom(clinicalRecord.getSymptom());
         clinicalRecordEntity.setDiagnostic(clinicalRecord.getDiagnostic());
@@ -51,7 +57,6 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         clinicalRecordEntity.setVaccination(clinicalRecord.getVaccination());
         clinicalRecordEntity.setAllergicTo(clinicalRecord.getAllergicTo());
         clinicalRecordEntity.setProcedureDetail(clinicalRecord.getProcedureDetail());
-        clinicalRecordEntity.setCancelled(clinicalRecord.isCancelled());
 
         return clinicalRecordEntity;
     }
@@ -62,9 +67,7 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         }
 
         ClinicalRecord clinicalRecord = new ClinicalRecord();
-
         clinicalRecord.setId(clinicalRecordEntity.getId());
-        clinicalRecord.setOrderId(clinicalRecordEntity.getOrderId());
         clinicalRecord.setTimestamp(clinicalRecordEntity.getTimestamp());
 
         if (clinicalRecordEntity.getVeterinarian() != null) {
@@ -72,6 +75,9 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         }
         if (clinicalRecordEntity.getPet() != null) {
             clinicalRecord.setPetId(clinicalRecordEntity.getPet().getId());
+        }
+        if (clinicalRecordEntity.getOrder() != null) {
+            clinicalRecord.setOrderId(clinicalRecordEntity.getOrder().getId());
         }
 
         clinicalRecord.setReason(clinicalRecordEntity.getReason());
@@ -82,7 +88,6 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         clinicalRecord.setVaccination(clinicalRecordEntity.getVaccination());
         clinicalRecord.setAllergicTo(clinicalRecordEntity.getAllergicTo());
         clinicalRecord.setProcedureDetail(clinicalRecordEntity.getProcedureDetail());
-        clinicalRecord.setCancelled(clinicalRecordEntity.isCancelled());
 
         return clinicalRecord;
     }

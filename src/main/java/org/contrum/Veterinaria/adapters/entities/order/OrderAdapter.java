@@ -1,5 +1,6 @@
 package org.contrum.Veterinaria.adapters.entities.order;
 
+import org.contrum.Veterinaria.adapters.entities.clinicalrecord.entity.ClinicalRecordEntity;
 import org.contrum.Veterinaria.adapters.entities.order.entity.OrderEntity;
 import org.contrum.Veterinaria.adapters.entities.order.repository.OrderRepository;
 import org.contrum.Veterinaria.adapters.entities.person.entity.PersonEntity;
@@ -24,7 +25,7 @@ public class OrderAdapter implements OrderPort {
     }
 
     @Override
-    public Order findByOrderId(Order order) {
+    public Order findById(Order order) {
         OrderEntity userEntity = repository.findById(this.orderAdapter(order));
         return orderAdapter(userEntity);
     }
@@ -34,6 +35,10 @@ public class OrderAdapter implements OrderPort {
 
         orderEntity.setId(order.getId());
         orderEntity.setTimestamp(order.getTimestamp());
+
+        ClinicalRecordEntity record = new ClinicalRecordEntity();
+        record.setId(order.getRecordId());
+        orderEntity.setRecord(record);
 
         PetEntity pet = new PetEntity();
         pet.setId(order.getPetId());
@@ -61,6 +66,7 @@ public class OrderAdapter implements OrderPort {
 
         order.setId(orderEntity.getId());
         order.setTimestamp(orderEntity.getTimestamp());
+        order.setRecordId(orderEntity.getRecord().getId());
 
         if (orderEntity.getPet() != null) {
             order.setPetId(orderEntity.getPet().getId());

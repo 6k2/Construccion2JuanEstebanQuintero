@@ -54,18 +54,17 @@ public class LoginInput implements InputPort {
                 break;
             default:
                 Printer.print("Ha elegido una opción inválida!");
-                this.menu();
                 break;
         }
+        this.menu();
     }
 
-    private void loginMenu() {
+    private void loginMenu() throws Exception {
         try {
             Printer.print("\nIngrese su usuario");
             String username = userValidator.userNameValidator(Printer.read());
             Printer.print("Ingrese su contraseña");
             String password = userValidator.passwordValidator(Printer.read());
-
 
             User loginUser = new User();
             loginUser.setUserName(username);
@@ -76,8 +75,8 @@ public class LoginInput implements InputPort {
             InputPort inputPort = inputs.get(user.getRole());
             inputPort.menu();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            loginMenu();
+            Printer.print(e.getMessage());
+            this.menu();
         }
     }
 }

@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SellerRepository extends JpaRepository<SellerEntity, Long> {
 
-    public SellerEntity findById(SellerEntity sellerEntity);
+    public SellerEntity findBySellerId(SellerEntity sellerEntity);
 
 }

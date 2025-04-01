@@ -1,25 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package org.contrum.Veterinaria.domain.services;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.contrum.Veterinaria.adapters.entities.seller.SellerAdapter;
 import org.contrum.Veterinaria.domain.models.ClinicalRecord;
-import org.contrum.Veterinaria.domain.models.Seller;
-import org.contrum.Veterinaria.domain.models.Veterinarian;
-import org.contrum.Veterinaria.ports.PersonPort;
-import org.contrum.Veterinaria.ports.SellerPort;
-import org.contrum.Veterinaria.ports.UserPort;
-import org.contrum.Veterinaria.ports.VeterinarianPort;
+import org.contrum.Veterinaria.domain.models.Order;
+import org.contrum.Veterinaria.domain.models.Person;
+import org.contrum.Veterinaria.domain.models.Pet;
+import org.contrum.Veterinaria.ports.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -30,14 +20,41 @@ public class VeterinarianService {
     @Autowired
     private PersonPort personPort;
     @Autowired
-    private UserPort userPort;
-    @Autowired
-    private SellerPort sellerPort;
-    @Autowired
     private VeterinarianPort veterinarianPort;
+    @Autowired
+    private ClinicalRecordPort clinicalRecordPort;
+    @Autowired
+    private OrderPort orderPort;
+    @Autowired
+    private PetPort petPort;
 
-    public void registerClinicalReport(ClinicalRecord record) {
-        //TODO: Backsend save
+    public void registerPetOwner(Person person) throws Exception {
+        if (personPort.existPerson(person.getDocument())) {
+            throw new Exception("Ya existe una persona con esa cedula!");
+        }
+
+        personPort.savePerson(person);
     }
 
+    public void registerPet(Pet pet) throws Exception {
+        if (!personPort.existPerson(pet.getOwnerDocument())) {
+            throw new Exception("No existe una persona para asignar a la mascota con esa cedula!");
+        }
+
+        petPort.savePet(pet);
+    }
+
+
+    public void createClinicalRecord(ClinicalRecord record) throws Exception {
+        if (!veterinarianPort.existVeterinarianByDocument(record.getVeterinarianId())) {
+            throw new Exception("No existe un veterinario con esa cedula!");
+        }
+
+        if (!petPort.existPet(record.getPetId())) {
+            throw new Exception("No existe una mascota con esa ID!");
+        }
+
+        record.setTimestamp(System.currentTimeMillis());
+        clinicalRecordPort.saveClinicalRecord(record);
+    }
 }

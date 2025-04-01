@@ -13,6 +13,6 @@ public class Pet {
     private String species;
     private String breed;
     private String color;
-    private String size;
+    private int size;
     private double weight;
 }

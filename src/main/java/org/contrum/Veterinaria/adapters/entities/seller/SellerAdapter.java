@@ -36,7 +36,7 @@ public class SellerAdapter implements SellerPort {
     @Override
     public Seller findBySellerId(Seller seller) {
         SellerEntity adaptedSellerEntity = this.sellerAdapter(seller);
-        SellerEntity sellerEntity = sellerRepository.findById(adaptedSellerEntity);
+        SellerEntity sellerEntity = sellerRepository.findBySellerId(adaptedSellerEntity);
 
         return sellerAdapter(sellerEntity);
     }

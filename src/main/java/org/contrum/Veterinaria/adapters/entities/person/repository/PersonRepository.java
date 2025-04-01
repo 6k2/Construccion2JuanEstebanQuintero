@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
 
-    public PersonEntity findById(PersonEntity personEntity);
+    public boolean existsByDocument(long document);
 
+    public PersonEntity findByDocument(PersonEntity personEntity);
+
+    public PersonEntity findByDocument(long document);
 }

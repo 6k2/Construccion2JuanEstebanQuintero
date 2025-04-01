@@ -17,7 +17,7 @@ public class PetEntity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    @JoinColumn(name = "owner_id")
     private PersonEntity owner;
 
     @Column(name = "age", nullable = false)
@@ -33,7 +33,7 @@ public class PetEntity {
     private String color;
 
     @Column(name = "size", nullable = false)
-    private String size;
+    private int size;
 
     @Column(name = "weight", nullable = false)
     private double weight;

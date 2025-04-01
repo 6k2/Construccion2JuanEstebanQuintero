@@ -1,12 +1,16 @@
 package org.contrum.Veterinaria.ports;
 
-import org.contrum.Veterinaria.domain.models.Person;
 import org.contrum.Veterinaria.domain.models.Pet;
+
+import java.util.List;
 
 public interface PetPort {
     public void savePet(Pet pet);
 
-    public boolean existsPet(long id);
+    public boolean existPet(long id);
 
-    public Person findByPersonId(Person person);
+    public Pet findById(Pet person);
+
+
+    List<Pet> findPetsByOwnerId(Long ownerId);
 }

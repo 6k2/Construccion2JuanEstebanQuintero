@@ -7,12 +7,12 @@ import org.contrum.Veterinaria.adapters.entities.person.PersonAdapter;
 import org.contrum.Veterinaria.adapters.entities.person.entity.PersonEntity;
 import org.contrum.Veterinaria.adapters.entities.users.entity.UserEntity;
 import org.contrum.Veterinaria.adapters.entities.veterinarian.entity.VeterinarianEntity;
+import org.contrum.Veterinaria.adapters.entities.veterinarian.repository.VeterinarianRepository;
+import org.contrum.Veterinaria.domain.models.Person;
 import org.contrum.Veterinaria.domain.models.Veterinarian;
 import org.contrum.Veterinaria.ports.VeterinarianPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -21,7 +21,7 @@ import java.util.List;
 public class VeterinarianAdapter implements VeterinarianPort {
 
     @Autowired
-    private org.contrum.Veterinaria.adapters.entities.veterinarian.repository.SellerVeterinarian sellerRepository;
+    private VeterinarianRepository veterinarianRepository;
 
     @Autowired
     private PersonAdapter personAdapter;
@@ -29,16 +29,25 @@ public class VeterinarianAdapter implements VeterinarianPort {
     @Override
     public void saveVeterinarian(Veterinarian seller) {
         VeterinarianEntity entity = this.veterinarianAdapter(seller);
-        sellerRepository.save(entity);
+        veterinarianRepository.save(entity);
 
         seller.setVeterinarianId(entity.getVeterinarianId());
     }
 
     @Override
+    public boolean existVeterinarianByDocument(long document) {
+        if (!personAdapter.existPerson(document)) {
+            return false;
+        }
+
+        Person person = personAdapter.findByDocument(document);
+        return person.getRole() == Person.Role.VETERINARIAN;
+    }
+
+    @Override
     public Veterinarian findByVeterinarianId(Veterinarian seller) {
         VeterinarianEntity adaptedSellerEntity = this.veterinarianAdapter(seller);
-        VeterinarianEntity sellerEntity = sellerRepository.findById(adaptedSellerEntity);
-
+        VeterinarianEntity sellerEntity = veterinarianRepository.findByVeterinarianId(adaptedSellerEntity);
 
         return this.veterinarianAdapter(sellerEntity);
     }

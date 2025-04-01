@@ -22,12 +22,18 @@ public class PersonAdapter implements PersonPort {
 
     @Override
     public boolean existPerson(long document) {
-        return personRepository.existsById(document);
+        return personRepository.existsByDocument(document);
     }
 
     @Override
-    public Person findByPersonId(Person person) {
-        PersonEntity userEntity = personRepository.findById(this.personAdapter(person));
+    public Person findByDocument(Person person) {
+        PersonEntity userEntity = personRepository.findByDocument(this.personAdapter(person));
+        return personAdapter(userEntity);
+    }
+
+    @Override
+    public Person findByDocument(long document) {
+        PersonEntity userEntity = personRepository.findByDocument(document);
         return personAdapter(userEntity);
     }
 

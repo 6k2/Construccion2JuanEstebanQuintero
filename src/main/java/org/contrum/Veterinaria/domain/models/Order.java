@@ -7,6 +7,7 @@ import lombok.Setter;
 public class Order {
 
     private long id;
+    private long recordId;
     private long petId;
     private long petOwnerDocument;
     private long veterinarianDocument;
