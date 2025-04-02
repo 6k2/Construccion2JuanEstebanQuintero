@@ -1,5 +1,6 @@
 package org.contrum.Veterinaria.adapters.entities.person;
 
+import jakarta.annotation.Nullable;
 import org.contrum.Veterinaria.adapters.entities.person.entity.PersonEntity;
 import org.contrum.Veterinaria.adapters.entities.person.repository.PersonRepository;
 import org.contrum.Veterinaria.domain.models.Person;
@@ -17,7 +18,7 @@ public class PersonAdapter implements PersonPort {
     public void savePerson(Person person) {
         PersonEntity entity = this.personAdapter(person);
         personRepository.save(entity);
-        person.setPersonId(entity.getId());
+        person.setId(entity.getId());
     }
 
     @Override
@@ -26,12 +27,19 @@ public class PersonAdapter implements PersonPort {
     }
 
     @Override
+    public Person findById(long id) {
+        return personRepository.findById(id)
+                .map(this::personAdapter)
+                .orElse(null);
+    }
+
+    @Override
     public Person findByDocument(Person person) {
         PersonEntity userEntity = personRepository.findByDocument(this.personAdapter(person));
         return personAdapter(userEntity);
     }
 
-    @Override
+    @Override @Nullable
     public Person findByDocument(long document) {
         PersonEntity userEntity = personRepository.findByDocument(document);
         return personAdapter(userEntity);
@@ -39,7 +47,7 @@ public class PersonAdapter implements PersonPort {
 
     public PersonEntity personAdapter(Person person) {
         PersonEntity personEntity = new PersonEntity();
-        personEntity.setId(person.getPersonId());
+        personEntity.setId(person.getId());
         personEntity.setDocument(person.getDocument());
         personEntity.setName(person.getName());
         personEntity.setAge(person.getAge());
@@ -53,11 +61,11 @@ public class PersonAdapter implements PersonPort {
         }
 
         Person person = new Person();
-        person.setPersonId(personEntity.getId());
-        person.setName(person.getName());
+        person.setId(personEntity.getId());
+        person.setName(personEntity.getName());
         person.setDocument(personEntity.getDocument());
-        person.setAge(person.getAge());
-        person.setRole(person.getRole());
+        person.setAge(personEntity.getAge());
+        person.setRole(personEntity.getRole());
         return person;
     }
 }

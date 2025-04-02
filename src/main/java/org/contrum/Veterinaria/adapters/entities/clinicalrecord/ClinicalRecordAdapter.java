@@ -10,6 +10,9 @@ import org.contrum.Veterinaria.ports.ClinicalRecordPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClinicalRecordAdapter implements ClinicalRecordPort {
 
@@ -24,10 +27,23 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
     }
 
     @Override
+    public boolean existsById(long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public ClinicalRecord findById(long record) {
         return repository.findById(record)
                 .map(this::clinicalRecordAdapter)
                 .orElse(null);
+    }
+
+    @Override
+    public List<ClinicalRecord> findByPetId(long petId) {
+        List<ClinicalRecordEntity> petEntities = repository.findByPetId(petId);
+        return petEntities.stream()
+                .map(this::clinicalRecordAdapter)
+                .collect(Collectors.toList());
     }
 
     public ClinicalRecordEntity clinicalRecordAdapter(ClinicalRecord clinicalRecord) {
@@ -42,12 +58,6 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         PetEntity pet = new PetEntity();
         pet.setId(clinicalRecord.getPetId());
         clinicalRecordEntity.setPet(pet);
-
-        if (clinicalRecord.getOrderId() != 0) {
-            OrderEntity order = new OrderEntity();
-            order.setId(clinicalRecord.getOrderId());
-            clinicalRecordEntity.setOrder(order);
-        }
 
         clinicalRecordEntity.setReason(clinicalRecord.getReason());
         clinicalRecordEntity.setSymptom(clinicalRecord.getSymptom());
@@ -75,9 +85,6 @@ public class ClinicalRecordAdapter implements ClinicalRecordPort {
         }
         if (clinicalRecordEntity.getPet() != null) {
             clinicalRecord.setPetId(clinicalRecordEntity.getPet().getId());
-        }
-        if (clinicalRecordEntity.getOrder() != null) {
-            clinicalRecord.setOrderId(clinicalRecordEntity.getOrder().getId());
         }
 
         clinicalRecord.setReason(clinicalRecordEntity.getReason());

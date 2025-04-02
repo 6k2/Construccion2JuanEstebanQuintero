@@ -10,7 +10,7 @@ public class Order {
     private long recordId;
     private long petId;
     private long petOwnerDocument;
-    private long veterinarianDocument;
+    private long veterinarianId;
     private String medicament;
 
     private long timestamp;

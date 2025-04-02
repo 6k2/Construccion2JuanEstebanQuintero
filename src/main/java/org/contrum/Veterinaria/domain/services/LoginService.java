@@ -18,12 +18,10 @@ public class LoginService {
     public User login(User user) throws Exception {
         User userValidate = userPort.findByUserName(user);
         if (user == null) {
-            System.out.println("Null user");
             throw new Exception("Usuario o contraseña invalido");
         }
 
         if (!user.getPassword().equals(userValidate.getPassword())) {
-            System.out.println("Invalid password! correct password is: " + user.getPassword());
             throw new Exception("Usuario o contraseña invalido");
         }
 

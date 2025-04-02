@@ -44,9 +44,12 @@ public class VeterinarianService {
         petPort.savePet(pet);
     }
 
+    public Pet findPetById(long id) {
+        return petPort.findById(id);
+    }
 
     public void createClinicalRecord(ClinicalRecord record) throws Exception {
-        if (!veterinarianPort.existVeterinarianByDocument(record.getVeterinarianId())) {
+        if (!veterinarianPort.existVeterinarianById(record.getVeterinarianId())) {
             throw new Exception("No existe un veterinario con esa cedula!");
         }
 
@@ -56,5 +59,22 @@ public class VeterinarianService {
 
         record.setTimestamp(System.currentTimeMillis());
         clinicalRecordPort.saveClinicalRecord(record);
+    }
+
+    public void createOrder(Order order) throws Exception {
+        if (!clinicalRecordPort.existsById(order.getRecordId())) {
+            throw new Exception("No existe un registro clinico con esa ID!");
+        }
+
+        if (!veterinarianPort.existVeterinarianById(order.getVeterinarianId())) {
+            throw new Exception("No existe un veterinario con esa cedula!");
+        }
+
+        if (!petPort.existPet(order.getPetId())) {
+            throw new Exception("No existe una mascota con esa ID!");
+        }
+
+        order.setTimestamp(System.currentTimeMillis());
+        orderPort.saveOrder(order);
     }
 }

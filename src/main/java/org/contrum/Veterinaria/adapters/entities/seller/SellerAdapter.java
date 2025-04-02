@@ -30,7 +30,7 @@ public class SellerAdapter implements SellerPort {
         SellerEntity sellerEntity = this.sellerAdapter(seller);
         sellerRepository.save(sellerEntity);
 
-        seller.setSellerId(sellerEntity.getSellerId());
+        seller.setId(sellerEntity.getSellerId());
     }
 
     @Override
@@ -48,9 +48,9 @@ public class SellerAdapter implements SellerPort {
         }
 
         Seller seller = new Seller();
-        seller.setSellerId(sellerEntity.getSellerId());
-        seller.setUserId(sellerEntity.getUser().getUserId());
-        seller.setPersonId(sellerEntity.getUser().getPerson().getId());
+        seller.setId(sellerEntity.getSellerId());
+        seller.setId(sellerEntity.getUser().getUserId());
+        seller.setId(sellerEntity.getUser().getPerson().getId());
         seller.setDocument(sellerEntity.getUser().getPerson().getDocument());
         seller.setName(sellerEntity.getUser().getPerson().getName());
         seller.setAge(sellerEntity.getUser().getPerson().getAge());
@@ -64,9 +64,9 @@ public class SellerAdapter implements SellerPort {
         PersonEntity personEntity = personAdapter.personAdapter(user);
         UserEntity userEntity = new UserEntity();
         SellerEntity sellerEntity = new SellerEntity();
-        personEntity.setId(user.getPersonId());
-        sellerEntity.setSellerId(user.getSellerId());
-        userEntity.setUserId(user.getUserId());
+        personEntity.setId(user.getId());
+        sellerEntity.setSellerId(user.getId());
+        userEntity.setUserId(user.getId());
         userEntity.setPerson(personEntity);
         userEntity.setUserName(user.getUserName());
         userEntity.setPassword(user.getPassword());

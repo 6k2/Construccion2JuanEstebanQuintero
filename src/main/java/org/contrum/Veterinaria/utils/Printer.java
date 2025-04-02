@@ -62,6 +62,21 @@ public class Printer {
         return mainReader.nextLine();
     }
 
+    public static boolean readBoolean() {
+        while (true) {
+            String option = Printer.read().toLowerCase();
+            switch (option) {
+                case "si", "yes", "y":
+                    return true;
+                case "no", "n":
+                    return false;
+                default:
+                    Printer.print("Elige una opcion valida.");
+                    break;
+            }
+        }
+    }
+
     public static void registerCommand(String command, LineCommand action) {
         commands.put(command, action);
     }

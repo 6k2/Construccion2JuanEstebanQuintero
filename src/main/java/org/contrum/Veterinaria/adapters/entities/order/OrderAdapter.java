@@ -49,7 +49,7 @@ public class OrderAdapter implements OrderPort {
         orderEntity.setPetOwner(petOwner);
 
         VeterinarianEntity veterinarian = new VeterinarianEntity();
-        veterinarian.getUser().getPerson().setDocument(order.getVeterinarianDocument());
+        veterinarian.getUser().getPerson().setDocument(order.getVeterinarianId());
         orderEntity.setVeterinarian(veterinarian);
 
         orderEntity.setMedicament(order.getMedicament());
@@ -75,7 +75,7 @@ public class OrderAdapter implements OrderPort {
             order.setPetOwnerDocument(orderEntity.getPetOwner().getDocument());
         }
         if (orderEntity.getVeterinarian() != null) {
-            order.setVeterinarianDocument(orderEntity.getVeterinarian().getUser().getPerson().getDocument());
+            order.setVeterinarianId(orderEntity.getVeterinarian().getUser().getPerson().getDocument());
         }
 
         order.setMedicament(orderEntity.getMedicament());

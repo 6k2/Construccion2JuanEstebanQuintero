@@ -7,7 +7,7 @@ public class SimpleValidator {
 
     public String stringValidator(String value, String element) throws Exception {
         if (value == null || value.equals("")) {
-            throw new Exception(element + "no tiene un valor valido");
+            throw new Exception(element + " no tiene un valor valido");
         }
         return value;
     }
@@ -16,7 +16,7 @@ public class SimpleValidator {
         try {
             return Long.parseLong(stringValidator(value, element));
         } catch (Exception e) {
-            throw new Exception(element + "debe ser un valor numerico");
+            throw new Exception(element + " debe ser un valor numerico");
         }
     }
 
@@ -24,7 +24,7 @@ public class SimpleValidator {
         try {
             return Integer.parseInt(stringValidator(value, element));
         } catch (Exception e) {
-            throw new Exception(element + "debe ser un valor numerico");
+            throw new Exception(element + " debe ser un valor numerico");
         }
     }
 
@@ -32,7 +32,7 @@ public class SimpleValidator {
         try {
             return Double.parseDouble(stringValidator(value, element));
         } catch (Exception e) {
-            throw new Exception(element + "debe ser un valor numerico");
+            throw new Exception(element + " debe ser un valor numerico");
         }
     }
 }

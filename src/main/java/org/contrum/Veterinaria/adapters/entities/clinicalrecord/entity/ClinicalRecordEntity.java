@@ -3,7 +3,6 @@ package org.contrum.Veterinaria.adapters.entities.clinicalrecord.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.contrum.Veterinaria.adapters.entities.order.entity.OrderEntity;
 import org.contrum.Veterinaria.adapters.entities.pet.entity.PetEntity;
 import org.contrum.Veterinaria.adapters.entities.veterinarian.entity.VeterinarianEntity;
 
@@ -21,27 +20,23 @@ public class ClinicalRecordEntity {
     private Long timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "veterinarian_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "veterinarian_id", nullable = false)
     private VeterinarianEntity veterinarian;
 
     @ManyToOne
     @JoinColumn(name = "pet_id", nullable = false)
     private PetEntity pet;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private OrderEntity order;
-
     @Column(name = "reason", nullable = false)
     private String reason;
 
-    @Column(name = "symptom", nullable = false)
+    @Column(name = "symptom")
     private String symptom;
 
-    @Column(name = "diagnostic", nullable = false)
+    @Column(name = "diagnostic")
     private String diagnostic;
 
-    @Column(name = "medical_procedure", nullable = false)
+    @Column(name = "medical_procedure")
     private String procedure;
 
     @Column(name = "medicament")

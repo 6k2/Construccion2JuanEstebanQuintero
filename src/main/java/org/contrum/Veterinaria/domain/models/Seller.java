@@ -5,5 +5,4 @@ import lombok.Setter;
 
 @Getter @Setter
 public class Seller extends User {
-    private long sellerId;
 }

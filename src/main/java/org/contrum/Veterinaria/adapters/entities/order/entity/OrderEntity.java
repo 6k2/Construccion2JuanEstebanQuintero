@@ -18,7 +18,7 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "record_id", nullable = false)
     private ClinicalRecordEntity record;
 

@@ -42,9 +42,7 @@ public class AdminService {
         if (userPort.existUserName(seller.getUserName())) {
             throw new Exception("Ya existe ese username registrado");
         }
-
-        personPort.savePerson(seller);
-        userPort.saveUser(seller);
+        
         sellerPort.saveSeller(seller);
     }
 
@@ -56,8 +54,6 @@ public class AdminService {
             throw new Exception("Ya existe ese username registrado");
         }
 
-        personPort.savePerson(veterinarian);
-        userPort.saveUser(veterinarian);
         veterinarianPort.saveVeterinarian(veterinarian);
     }
 

@@ -35,7 +35,7 @@ public class UserAdapter implements UserPort {
         UserEntity userEntity = userEntityAdapter(user);
 
         userRepository.save(userEntity);
-        user.setUserId(userEntity.getUserId());
+        user.setId(userEntity.getUserId());
     }
 
     @Override
@@ -58,9 +58,9 @@ public class UserAdapter implements UserPort {
         }
 
         User user = new User();
-        user.setUserId(userEntity.getUserId());
+        user.setId(userEntity.getUserId());
         user.setDocument(userEntity.getUserId());
-        user.setPersonId(userEntity.getPerson().getId());
+        user.setId(userEntity.getPerson().getId());
         user.setName(userEntity.getPerson().getName());
         user.setAge(userEntity.getPerson().getAge());
         user.setRole(userEntity.getRole());
@@ -70,9 +70,11 @@ public class UserAdapter implements UserPort {
     }
 
     private UserEntity userEntityAdapter(User user) {
-        PersonEntity personEntity = personAdapter.personAdapter(user);
+        PersonEntity personEntity = new PersonEntity();
+        personEntity.setId(user.getId());
+
         UserEntity userEntity = new UserEntity();
-        userEntity.setUserId(user.getUserId());
+        userEntity.setUserId(user.getId());
         userEntity.setPerson(personEntity);
         userEntity.setUserName(user.getUserName());
         userEntity.setPassword(user.getPassword());

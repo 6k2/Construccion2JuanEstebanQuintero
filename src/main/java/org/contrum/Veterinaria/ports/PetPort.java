@@ -9,8 +9,7 @@ public interface PetPort {
 
     public boolean existPet(long id);
 
-    public Pet findById(Pet person);
-
+    public Pet findById(long id);
 
     List<Pet> findPetsByOwnerId(Long ownerId);
 }

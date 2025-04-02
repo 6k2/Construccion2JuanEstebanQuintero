@@ -27,29 +27,24 @@ public class VeterinarianAdapter implements VeterinarianPort {
     private PersonAdapter personAdapter;
 
     @Override
-    public void saveVeterinarian(Veterinarian seller) {
-        VeterinarianEntity entity = this.veterinarianAdapter(seller);
+    public void saveVeterinarian(Veterinarian veterinarian) {
+        VeterinarianEntity entity = this.veterinarianAdapter(veterinarian);
         veterinarianRepository.save(entity);
 
-        seller.setVeterinarianId(entity.getVeterinarianId());
+        veterinarian.setId(entity.getVeterinarianId());
     }
 
     @Override
-    public boolean existVeterinarianByDocument(long document) {
-        if (!personAdapter.existPerson(document)) {
-            return false;
-        }
-
-        Person person = personAdapter.findByDocument(document);
-        return person.getRole() == Person.Role.VETERINARIAN;
+    public boolean existVeterinarianById(long document) {
+        Person person = personAdapter.findById(document);
+        return person != null && person.getRole() == Person.Role.VETERINARIAN;
     }
 
     @Override
-    public Veterinarian findByVeterinarianId(Veterinarian seller) {
-        VeterinarianEntity adaptedSellerEntity = this.veterinarianAdapter(seller);
-        VeterinarianEntity sellerEntity = veterinarianRepository.findByVeterinarianId(adaptedSellerEntity);
-
-        return this.veterinarianAdapter(sellerEntity);
+    public Veterinarian findById(long id) {
+        return veterinarianRepository.findById(id)
+                .map(this::veterinarianAdapter)
+                .orElse(null);
     }
 
 
@@ -59,9 +54,9 @@ public class VeterinarianAdapter implements VeterinarianPort {
         }
 
         Veterinarian veterinarian = new Veterinarian();
-        veterinarian.setVeterinarianId(sellerEntity.getVeterinarianId());
-        veterinarian.setUserId(sellerEntity.getUser().getUserId());
-        veterinarian.setPersonId(sellerEntity.getUser().getPerson().getId());
+        veterinarian.setId(sellerEntity.getVeterinarianId());
+        veterinarian.setId(sellerEntity.getUser().getUserId());
+        veterinarian.setId(sellerEntity.getUser().getPerson().getId());
         veterinarian.setDocument(sellerEntity.getUser().getPerson().getDocument());
         veterinarian.setName(sellerEntity.getUser().getPerson().getName());
         veterinarian.setAge(sellerEntity.getUser().getPerson().getAge());
@@ -75,9 +70,9 @@ public class VeterinarianAdapter implements VeterinarianPort {
         PersonEntity personEntity = personAdapter.personAdapter(user);
         UserEntity userEntity = new UserEntity();
         VeterinarianEntity veterinarianEntity = new VeterinarianEntity();
-        personEntity.setId(user.getPersonId());
-        veterinarianEntity.setVeterinarianId(user.getVeterinarianId());
-        userEntity.setUserId(user.getUserId());
+        personEntity.setId(user.getId());
+        veterinarianEntity.setVeterinarianId(user.getId());
+        userEntity.setUserId(user.getId());
         userEntity.setPerson(personEntity);
         userEntity.setUserName(user.getUserName());
         userEntity.setPassword(user.getPassword());

@@ -11,11 +11,11 @@ import org.contrum.Veterinaria.adapters.entities.person.entity.PersonEntity;
 public class UserEntity {
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
     @OneToOne
-    @JoinColumn(name = "person_id")
+    @MapsId
+    @JoinColumn(name = "id")
     private PersonEntity person;
 
     @Column(name = "user_name")

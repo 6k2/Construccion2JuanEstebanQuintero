@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter @Setter
 public class Person {
 
-	private long personId;
+	private long id;
 	private long document;
 	private String name;
 	private int age;

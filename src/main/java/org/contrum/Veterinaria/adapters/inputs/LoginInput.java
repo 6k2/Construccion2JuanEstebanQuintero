@@ -51,7 +51,7 @@ public class LoginInput implements InputPort {
                 break;
             case "3":
                 Printer.print("Hasta una próxima ocasión");
-                break;
+                return;
             default:
                 Printer.print("Ha elegido una opción inválida!");
                 break;

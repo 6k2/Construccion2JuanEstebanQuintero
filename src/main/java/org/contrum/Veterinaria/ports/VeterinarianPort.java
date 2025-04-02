@@ -1,11 +1,13 @@
 package org.contrum.Veterinaria.ports;
 
+import jakarta.annotation.Nullable;
 import org.contrum.Veterinaria.domain.models.Veterinarian;
 
 public interface VeterinarianPort {
-    public void saveVeterinarian(Veterinarian seller);
+    public void saveVeterinarian(Veterinarian veterinarian);
 
-    public boolean existVeterinarianByDocument(long document);
+    public boolean existVeterinarianById(long document);
 
-    public Veterinarian findByVeterinarianId(Veterinarian seller);
+    @Nullable
+    public Veterinarian findById(long id);
 }
