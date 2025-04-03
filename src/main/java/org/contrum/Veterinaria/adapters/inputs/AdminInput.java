@@ -40,6 +40,23 @@ public class AdminInput implements InputPort {
     @Autowired
     private ConsolePaginator consolePaginator;
 
+    /**
+     * Show the administrator menu.
+     * <p>
+     * This method displays the administrator menu, which allows the user to
+     * create a new seller, create a new veterinarian, list all sellers, list all
+     * veterinarians, or to exit the application.
+     * <p>
+     * If the user chooses to create a new seller or a new veterinarian, the
+     * corresponding method is called and the user is asked for the required
+     * information. If the user chooses to list all sellers or all veterinarians,
+     * the list is displayed using the {@link ConsolePaginator} utility.
+     * <p>
+     * If the user chooses to exit the application, the method simply returns.
+     * <p>
+     * If an exception occurs while executing any of the methods, the error
+     * message is printed and the menu is displayed again.
+     */
     public void menu() {
         Printer.print(
                 "",
@@ -111,6 +128,11 @@ public class AdminInput implements InputPort {
         menu();
     }
 
+        /**
+         * Registers a new seller with the given name, document, age, username, password, and role.
+         * @throws Exception if a person with the same document or a user with the same
+         * username already exists.
+         */
     private void createSeller() throws Exception {
         Printer.print("Ingrese el nombre del vendedor");
         String name = personValidator.nameValidator(Printer.read());
@@ -137,6 +159,17 @@ public class AdminInput implements InputPort {
         service.registerSeller(seller);
     }
 
+    /**
+     * Registers a new veterinarian with the given details.
+     *
+     * This method prompts the user to input the veterinarian's name, document ID,
+     * age, username, and password. It validates the input data and creates a new
+     * Veterinarian object with the provided information. The veterinarian is then
+     * registered using the veterinarian service.
+     *
+     * @throws Exception if a person with the same document or a user with the same
+     *                   username already exists.
+     */
     private void createVeterinarian() throws Exception {
         Printer.print("Ingrese el nombre del veterinario");
         String name = personValidator.nameValidator(Printer.read());

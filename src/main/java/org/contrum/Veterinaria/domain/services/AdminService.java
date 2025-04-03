@@ -35,6 +35,12 @@ public class AdminService {
     @Autowired
     private VeterinarianPort veterinarianPort;
 
+    /**
+     * Register a new seller.
+     * @param seller the seller to be registered.
+     * @throws Exception if a person with the same document or a user with the same
+     * username already exists.
+     */
     public void registerSeller(Seller seller) throws Exception {
         if (personPort.existPerson(seller.getDocument())) {
             throw new Exception("Ya existe una persona con esa cedula");
@@ -46,6 +52,12 @@ public class AdminService {
         sellerPort.saveSeller(seller);
     }
 
+    /**
+     * Register a new veterinarian.
+     * @param veterinarian the veterinarian to be registered.
+     * @throws Exception if a person with the same document or a user with the same
+     * username already exists.
+     */
     public void registerVeterinarian(Veterinarian veterinarian) throws Exception {
         if (personPort.existPerson(veterinarian.getDocument())) {
             throw new Exception("Ya existe una persona con esa cedula");
@@ -55,11 +67,5 @@ public class AdminService {
         }
 
         veterinarianPort.saveVeterinarian(veterinarian);
-    }
-
-    public List<Seller> getSellers() throws Exception {
-        return ((SellerAdapter) sellerPort).getSellerRepository().findAll().stream().map(
-                sellerEntity -> ((SellerAdapter) sellerPort).sellerAdapter(sellerEntity)
-        ).toList();
     }
 }

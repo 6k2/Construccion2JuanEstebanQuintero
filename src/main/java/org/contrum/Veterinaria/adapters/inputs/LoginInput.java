@@ -29,6 +29,13 @@ public class LoginInput implements InputPort {
         inputs.put(Person.Role.SELLER, sellerInput);
     }
 
+    /**
+     * Shows the main menu of the application to the user.
+     *
+     * The user can choose to login, login as an administrator, or exit the application.
+     *
+     * @throws Exception if any error occurs.
+     */
     @Override
     public void menu() throws Exception {
         Printer.print("\n\n\n\n\n\n\n\n\n");
@@ -59,6 +66,16 @@ public class LoginInput implements InputPort {
         this.menu();
     }
 
+    /**
+     * Allows the user to login using their username and password.
+     *
+     * Prompts the user for their username and password, validates the input,
+     * and logs in the user using the login service. If the login is successful,
+     * the corresponding menu for the user's role is displayed. If the login
+     * fails, the login menu is displayed again.
+     *
+     * @throws Exception if the login fails.
+     */
     private void loginMenu() throws Exception {
         try {
             Printer.print("\nIngrese su usuario");

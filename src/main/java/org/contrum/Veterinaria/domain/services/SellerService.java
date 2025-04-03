@@ -27,6 +27,13 @@ public class SellerService {
     @Autowired
     private InvoicePort invoicePort;
 
+    /**
+     * Registers an invoice in the database.
+     * <p>
+     * Given an invoice, this method will save it in the database.
+     *
+     * @param invoice the invoice to be registered
+     */
     public void registerInvoice(Invoice invoice) {
         invoicePort.saveInvoice(invoice);
     }

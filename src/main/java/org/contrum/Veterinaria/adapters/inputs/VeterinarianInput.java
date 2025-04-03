@@ -58,6 +58,21 @@ public class VeterinarianInput extends BaseStoreManagerInput {
     @Autowired
     private ConsolePaginator consolePaginator;
 
+    /**
+     * Displays the veterinarian menu and prompts the user to select an option.
+     * <p>
+     * This method presents a menu with various options related to managing pet
+     * owners and pets, such as registering a pet owner or pet, listing pet
+     * owners or pets, creating clinical records or orders, and consulting or
+     * canceling orders.
+     * <p>
+     * Depending on the user's choice, the appropriate method is invoked to
+     * perform the desired action. The menu is displayed again after each action
+     * until the user chooses to close the session by entering 'X'.
+     * <p>
+     * If an exception occurs during the execution of any action, the error
+     * message is printed and the menu is displayed again.
+     */
     public void menu() {
         Printer.print(
                 "<border>",
@@ -163,6 +178,16 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         menu();
     }
 
+    /**
+     * Registers a new pet owner with the given name, document ID, and age.
+     *
+     * This method prompts the user to input the pet owner's name, document ID,
+     * and age. It validates the input data and creates a new {@link Person} object
+     * with the provided information. The pet owner is then registered using the
+     * {@link PersonService}.
+     *
+     * @throws Exception if a person with the same document already exists.
+     */
     private void createPerson() throws Exception {
         Printer.print("Ingrese el nombre de la persona");
         String name = personValidator.nameValidator(Printer.read());
@@ -180,6 +205,18 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         service.registerPetOwner(person);
     }
 
+        /**
+         * Registers a new pet with the given name, age, species, breed, color,
+         * size, weight, and owner document ID.
+         *
+         * This method prompts the user to input the pet's name, age, species,
+         * breed, color, size, weight, and owner document ID. It validates the
+         * input data and creates a new {@link Pet} object with the provided
+         * information. The pet is then registered using the
+         * {@link PetService}.
+         *
+         * @throws Exception if a pet with the same name already exists.
+         */
     private void createPet() throws Exception {
         Printer.print("Ingrese el nombre de la mascota");
         String name = petValidator.nameValidator(Printer.read());
@@ -218,6 +255,18 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         service.registerPet(pet);
     }
 
+        /**
+         * Registers a new clinical record with the given reason, symptoms, diagnosis,
+         * procedure, medications, vaccinations, allergies, and procedure details.
+         *
+         * This method prompts the user to input the clinical record's reason, symptoms,
+         * diagnosis, procedure, medications, vaccinations, allergies, and procedure
+         * details. It validates the input data and creates a new {@link ClinicalRecord}
+         * object with the provided information. The clinical record is then registered
+         * using the {@link ClinicalRecordService}.
+         *
+         * @throws Exception if the current user is not a veterinarian.
+         */
     private void createClinicalRecord() throws Exception {
         Pet pet = this.findPet();
 
@@ -270,6 +319,26 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         service.createClinicalRecord(record);
     }
 
+        /**
+         * Registers a new order for a pet with the given clinical record, pet, and veterinarian.
+         *
+         * This method creates a new {@link Order} object with the provided information and
+         * registers it using the {@link OrderService}.
+         *
+         * If the clinical record is null, it prompts the user to input the clinical record ID
+         * and finds the corresponding clinical record using the {@link ClinicalRecordService}.
+         * If the pet is null, it prompts the user to input the pet ID and finds the corresponding
+         * pet using the {@link PetService}. If the veterinarian is null, it finds the current
+         * user's ID using the {@link LoginService} and finds the corresponding veterinarian
+         * using the {@link VeterinarianService}.
+         *
+         * @param record the clinical record to be associated with the order.
+         * @param pet the pet to be associated with the order.
+         * @param veterinarian the veterinarian to be associated with the order.
+         * @throws Exception if the user is not a veterinarian, or if the clinical record ID
+         *                    does not correspond to an existing clinical record, or if the pet
+         *                    ID does not correspond to an existing pet.
+         */
     private void createOrder(@Nullable ClinicalRecord record, @Nullable Pet pet, @Nullable Veterinarian veterinarian) throws Exception {
         if (pet == null) {
             pet = super.findPet();
@@ -306,6 +375,11 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         service.createOrder(order);
     }
 
+        /**
+         * Lists all the clinical records associated with a given pet.
+         *
+         * @throws Exception if the user is not a veterinarian, or if the pet ID does not correspond to an existing pet.
+         */
     private void listClinicalRecords() throws Exception {
         Pet pet = super.findPet();
 
@@ -331,6 +405,13 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         );
     }
 
+        /**
+         * Cancela una orden pendiente para una mascota.
+         *
+         * Si no hay ordenes pendientes para esa mascota, lanza una excepción.
+         *
+         * @throws Exception si la mascota no tiene ordenes pendientes, o si se produce un error al cancelar la orden.
+         */
     private void cancelOrder() throws Exception {
         Pet pet = super.findPet();
         List<Order> orders = orderPort.findByPetId(pet.getId());

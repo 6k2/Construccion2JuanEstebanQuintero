@@ -26,6 +26,11 @@ public class VeterinarianAdapter implements VeterinarianPort {
     @Autowired
     private PersonAdapter personAdapter;
 
+    /**
+     * Saves a veterinarian in the database.
+     *
+     * @param veterinarian the veterinarian to save.
+     */
     @Override
     public void saveVeterinarian(Veterinarian veterinarian) {
         VeterinarianEntity entity = this.veterinarianAdapter(veterinarian);
@@ -34,12 +39,24 @@ public class VeterinarianAdapter implements VeterinarianPort {
         veterinarian.setId(entity.getVeterinarianId());
     }
 
+    /**
+     * Checks if a veterinarian exists by their document ID.
+     *
+     * @param document the document ID to check.
+     * @return true if a veterinarian with the given document ID exists, false otherwise.
+     */
     @Override
     public boolean existVeterinarianById(long document) {
         Person person = personAdapter.findById(document);
         return person != null && person.getRole() == Person.Role.VETERINARIAN;
     }
 
+    /**
+     * Finds a veterinarian by their ID.
+     *
+     * @param id the ID of the veterinarian to find.
+     * @return the veterinarian with the given ID, or null if no veterinarian is found.
+     */
     @Override
     public Veterinarian findById(long id) {
         return veterinarianRepository.findById(id)
@@ -48,6 +65,12 @@ public class VeterinarianAdapter implements VeterinarianPort {
     }
 
 
+    /**
+     * Converts a VeterinarianEntity to a Veterinarian domain model.
+     *
+     * @param sellerEntity the VeterinarianEntity to convert.
+     * @return the corresponding Veterinarian domain model, or null if the input entity is null.
+     */
     public Veterinarian veterinarianAdapter(VeterinarianEntity sellerEntity) {
         if (sellerEntity == null) {
             return null;
@@ -66,6 +89,11 @@ public class VeterinarianAdapter implements VeterinarianPort {
         return veterinarian;
     }
 
+    /**
+     * Converts a Veterinarian domain model to a VeterinarianEntity.
+     * @param user the Veterinarian domain model to convert.
+     * @return the corresponding VeterinarianEntity.
+     */
     private VeterinarianEntity veterinarianAdapter(Veterinarian user) {
         PersonEntity personEntity = personAdapter.personAdapter(user);
         UserEntity userEntity = new UserEntity();

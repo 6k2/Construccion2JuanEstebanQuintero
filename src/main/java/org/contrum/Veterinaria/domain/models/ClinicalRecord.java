@@ -24,6 +24,7 @@ public class ClinicalRecord {
     private String allergicTo;
     private String procedureDetail;
 
+
     public String getFormattedTimeStampText() {
         SimpleDateFormat formatter = new SimpleDateFormat("d 'de' MMMM 'de' yyyy 'a las' HH:mm", new Locale("es", "ES"));
         return formatter.format(new Date(timestamp));

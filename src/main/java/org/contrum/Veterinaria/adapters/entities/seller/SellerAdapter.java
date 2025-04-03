@@ -25,6 +25,11 @@ public class SellerAdapter implements SellerPort {
     @Autowired
     private PersonAdapter personAdapter;
 
+    /**
+     * Saves a seller in the database.
+     * @param seller the seller to be saved. After calling this method, the id of the
+     * seller will be set with the id of the saved entity.
+     */
     @Override
     public void saveSeller(Seller seller) {
         SellerEntity sellerEntity = this.sellerAdapter(seller);
@@ -33,6 +38,12 @@ public class SellerAdapter implements SellerPort {
         seller.setId(sellerEntity.getSellerId());
     }
 
+    /**
+     * Finds a seller by their seller ID.
+     *
+     * @param seller the seller whose ID will be used for the search.
+     * @return the Seller object corresponding to the found seller entity, or null if no seller is found.
+     */
     @Override
     public Seller findBySellerId(Seller seller) {
         SellerEntity adaptedSellerEntity = this.sellerAdapter(seller);
@@ -42,6 +53,11 @@ public class SellerAdapter implements SellerPort {
     }
 
 
+    /**
+     * Adapts a {@link SellerEntity} to a {@link Seller}.
+     * @param sellerEntity the entity to be adapted.
+     * @return the adapted seller, or null if the given entity is null.
+     */
     public Seller sellerAdapter(SellerEntity sellerEntity) {
         if (sellerEntity == null) {
             return null;
@@ -60,6 +76,12 @@ public class SellerAdapter implements SellerPort {
         return seller;
     }
 
+/**
+ * Converts a {@link Seller} object to a {@link SellerEntity}.
+ *
+ * @param user the Seller object to be converted.
+ * @return the corresponding SellerEntity.
+ */
     private SellerEntity sellerAdapter(Seller user) {
         PersonEntity personEntity = personAdapter.personAdapter(user);
         UserEntity userEntity = new UserEntity();

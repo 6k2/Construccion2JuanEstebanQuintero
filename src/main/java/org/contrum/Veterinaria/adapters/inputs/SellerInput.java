@@ -45,6 +45,26 @@ public class SellerInput extends BaseStoreManagerInput {
     @Autowired
     private ConsolePaginator consolePaginator;
 
+    /**
+     * Show the seller menu.
+     * <p>
+     * This method displays the seller menu, which allows the user to list medical
+     * orders for a pet, list active medical orders, sell a medicament, sell a
+     * product, list all invoices, or to exit the application.
+     * <p>
+     * If the user chooses to list medical orders for a pet, the
+     * {@link #listOrders()} method is called and the user is asked for the
+     * pet's ID. If the user chooses to list active medical orders, the
+     * {@link #listActiveOrders()} method is called. If the user chooses to sell a
+     * medicament, the {@link #sellMedicament()} method is called and the user
+     * is asked for the required information. If the user chooses to sell a
+     * product, the {@link #sellProduct()} method is called and the user is asked
+     * for the required information. If the user chooses to list all invoices,
+     * the {@link #listInvoices()} method is called.
+     * <p>
+     * If an exception occurs while executing any of the methods, the error
+     * message is printed and the menu is displayed again.
+     */
     public void menu() {
         Printer.print(
                 "<border>",
@@ -97,6 +117,16 @@ public class SellerInput extends BaseStoreManagerInput {
         menu();
     }
 
+
+/**
+ * Lists all active medical orders for a specific pet.
+ *
+ * <p>This method retrieves all orders associated with a pet's ID and filters
+ * out any that are cancelled. The remaining active orders are displayed to the
+ * user in a paginated format.
+ *
+ * @throws Exception if there are no orders associated with the pet
+ */
     private void listActiveOrders() throws Exception {
         Pet pet = super.findPet();
 
@@ -124,6 +154,21 @@ public class SellerInput extends BaseStoreManagerInput {
         );
     }
 
+    /**
+     * Allows the user to sell a medicament for a pet.
+     * <p>
+     * This method first finds the pet associated with the user's input ID,
+     * then retrieves all active orders associated with that pet. The user is
+     * asked to select one of the orders, and then to enter the quantity and
+     * price of the medicament to be sold. Finally, the method creates a new
+     * invoice based on the user's input and registers it with the invoice
+     * service.
+     * <p>
+     * If there are no active orders associated with the pet, an exception is
+     * thrown.
+     *
+     * @throws Exception if there are no active orders associated with the pet
+     */
     private void sellMedicament() throws Exception {
         Pet pet = super.findPet();
 
@@ -144,6 +189,19 @@ public class SellerInput extends BaseStoreManagerInput {
         service.registerInvoice(invoice);
     }
 
+    /**
+     * Allows the user to sell a product for a pet.
+     * <p>
+     * This method first finds the pet associated with the user's input ID,
+     * then asks the user to enter the name, quantity and price of the product
+     * to be sold. Finally, the method creates a new invoice based on the
+     * user's input and registers it with the invoice service.
+     * <p>
+     * If there are no active orders associated with the pet, an exception is
+     * thrown.
+     *
+     * @throws Exception if there are no active orders associated with the pet
+     */
     private void sellProduct() throws Exception {
         Pet pet = super.findPet();
 
@@ -160,6 +218,18 @@ public class SellerInput extends BaseStoreManagerInput {
         service.registerInvoice(invoice);
     }
 
+    /**
+     * Shows a list of invoices associated with a pet.
+     * <p>
+     * This method first finds the pet associated with the user's input ID,
+     * then asks the user to enter the number of records to show. Finally, the
+     * method paginates the list of invoices associated with the pet and
+     * displays the results.
+     * <p>
+     * If there are no invoices associated with the pet, an exception is thrown.
+     *
+     * @throws Exception if there are no invoices associated with the pet
+     */
     private void listInvoices() throws Exception {
         Pet pet = super.findPet();
 
@@ -183,6 +253,20 @@ public class SellerInput extends BaseStoreManagerInput {
     }
 
 
+    /**
+     * Creates a new invoice for a product sold to a pet owner.
+     *
+     * <p>This method constructs an invoice for a product sold
+     * to the owner of the specified pet, using the given product
+     * name, price, and quantity. The invoice is timestamped with
+     * the current system time.
+     *
+     * @param pet the pet associated with the invoice
+     * @param productName the name of the product being sold
+     * @param price the price of the product
+     * @param quantity the quantity of the product being sold
+     * @return the created invoice
+     */
     private Invoice createInvoice(Pet pet, String productName, long price, int quantity) {
         Invoice invoice = new Invoice();
 
@@ -197,6 +281,20 @@ public class SellerInput extends BaseStoreManagerInput {
         return invoice;
     }
 
+    /**
+     * Creates a new invoice for a medicament sold to a pet owner.
+     *
+     * <p>This method constructs an invoice for a medicament sold
+     * to the owner of the specified pet, using the given order,
+     * price, and quantity. The invoice is timestamped with the
+     * current system time.
+     *
+     * @param pet the pet associated with the invoice
+     * @param order the order associated with the medicament being sold
+     * @param price the price of the medicament
+     * @param quantity the quantity of the medicament being sold
+     * @return the created invoice
+     */
     private Invoice createInvoice(Pet pet, Order order, long price, int quantity) {
         Invoice invoice = new Invoice();
 

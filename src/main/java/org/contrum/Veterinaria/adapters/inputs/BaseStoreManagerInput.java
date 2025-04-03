@@ -37,6 +37,16 @@ public abstract class BaseStoreManagerInput implements InputPort {
     @Autowired
     private ConsolePaginator consolePaginator;
 
+    /**
+     * Pide al usuario la cedula de un due o de mascota o la ID de una mascota,
+     * y devuelve la mascota correspondiente.
+     * Si la cedula ingresada es de un due o, se muestran las mascotas de ese
+     * due o y se pide al usuario que elija una de ellas.
+     * @return la mascota correspondiente a la cedula o ID ingresada
+     * @throws Exception si no se encuentra ninguna persona con la cedula
+     *                   ingresada o mascota con la ID ingresada, o si el usuario
+     *                   ingresa un numero de mascota invalido.
+     */
     protected Pet findPet() throws Exception {
         Printer.print("Ingrese la cedula de un dueño de mascota o una ID de mascota");
         long id = clinicalRecordValidator.documentOrPetIdValidator(Printer.read());
@@ -85,6 +95,14 @@ public abstract class BaseStoreManagerInput implements InputPort {
         throw new Exception("No se ha encontrado ninguna persona con esa cedula o mascota con esa ID.");
     }
 
+    /**
+     * Retrieves the most recent clinical record for a given pet. If multiple
+     * records are available, prompts the user to select a specific record.
+     *
+     * @param pet the pet for which to retrieve the clinical record
+     * @return the most recent or user-selected clinical record
+     * @throws Exception if no clinical records are found for the given pet
+     */
     protected ClinicalRecord getClinicalRecord(Pet pet) throws Exception {
         List<ClinicalRecord> clinicalRecords = clinicalRecordPort.findByPetId(pet.getId());
 
@@ -113,6 +131,13 @@ public abstract class BaseStoreManagerInput implements InputPort {
         return latestRecord;
     }
 
+    /**
+     * Retrieves and displays all the orders associated with the most recent
+     * clinical record for a given pet. If multiple clinical records are
+     * available, prompts the user to select a specific record.
+     *
+     * @throws Exception if no clinical records or orders are found for the given pet
+     */
     protected void listOrders() throws Exception {
         Pet pet = this.findPet();
         ClinicalRecord record = this.getClinicalRecord(pet);
@@ -135,6 +160,20 @@ public abstract class BaseStoreManagerInput implements InputPort {
         );
     }
 
+    /**
+     * Allows the user to choose an order from a list of given orders.
+     *
+     * <p>If <code>onlyActive</code> is <code>true</code>, this method will only
+     * consider orders that are not cancelled.
+     *
+     * <p>This method will throw an exception if no orders are given or if all
+     * orders are cancelled.
+     *
+     * @param orders the list of orders to choose from
+     * @param onlyActive whether to only consider active orders
+     * @return the chosen order
+     * @throws Exception if no order can be chosen
+     */
     protected Order choseOrder(List<Order> orders, boolean onlyActive) throws Exception {
         List<Order> filteredOrders = orders;
         if (onlyActive) {
@@ -174,6 +213,15 @@ public abstract class BaseStoreManagerInput implements InputPort {
         return choseenOrder;
     }
 
+    /**
+     * Allows the user to choose a clinical record from a list of given records.
+     *
+     * <p>This method will throw an exception if no records are given.
+     *
+     * @param records the list of records to choose from
+     * @return the chosen record
+     * @throws Exception if no record can be chosen
+     */
     protected ClinicalRecord choseClinicalRecord(List<ClinicalRecord> records) {
         // Mostramos los registros existentes
         Printer.print(

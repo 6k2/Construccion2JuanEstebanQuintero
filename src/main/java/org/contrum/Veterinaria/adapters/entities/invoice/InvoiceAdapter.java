@@ -19,6 +19,13 @@ public class InvoiceAdapter implements InvoicePort {
     @Autowired
     private InvoiceRepository repository;
 
+    /**
+     * Registers an invoice in the database.
+     * <p>
+     * Given an invoice, this method will save it in the database.
+     *
+     * @param invoice the invoice to be registered
+     */
     @Override
     public void saveInvoice(Invoice invoice) {
         InvoiceEntity invoiceEntity = this.invoiceAdapter(invoice);
@@ -26,6 +33,15 @@ public class InvoiceAdapter implements InvoicePort {
         invoice.setId(invoiceEntity.getId());
     }
 
+    /**
+     * Finds an invoice by the given invoice object.
+     * <p>
+     * If the invoice exists in the database, this method will return the invoice.
+     * Otherwise, it will return null.
+     *
+     * @param invoice the invoice to be searched
+     * @return the invoice if found, null otherwise
+     */
     @Override
     public Invoice findById(Invoice invoice) {
         return repository.findById(invoice.getId())
@@ -33,6 +49,15 @@ public class InvoiceAdapter implements InvoicePort {
                 .orElse(null);
     }
 
+    /**
+     * Finds a list of invoices by the given order ID.
+     * <p>
+     * This method searches for invoices associated with the specified order ID and returns them as a list.
+     * If no invoices are found, an empty list is returned.
+     *
+     * @param id the order ID for which invoices are to be found
+     * @return a list of invoices associated with the given order ID
+     */
     @Override
     public List<Invoice> findByOrderId(long id) {
         List<InvoiceEntity> entities = repository.findByOrderId(id);
@@ -41,6 +66,15 @@ public class InvoiceAdapter implements InvoicePort {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Finds a list of invoices by the given pet ID.
+     * <p>
+     * This method searches for invoices associated with the specified pet ID and returns them as a list.
+     * If no invoices are found, an empty list is returned.
+     *
+     * @param id the pet ID for which invoices are to be found
+     * @return a list of invoices associated with the given pet ID
+     */
     @Override
     public List<Invoice> findByPetId(long id) {
         List<InvoiceEntity> entities = repository.findByPetId(id);
@@ -49,6 +83,15 @@ public class InvoiceAdapter implements InvoicePort {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Converts a domain model invoice into an entity invoice.
+     * <p>
+     * This method takes a domain model invoice and converts it into an entity invoice
+     * that can be used to interact with the database.
+     *
+     * @param invoice the domain model invoice to be converted
+     * @return the converted entity invoice
+     */
     public InvoiceEntity invoiceAdapter(Invoice invoice) {
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setId(invoice.getId());
@@ -75,6 +118,16 @@ public class InvoiceAdapter implements InvoicePort {
         return invoiceEntity;
     }
 
+    /**
+     * Converts an entity invoice into a domain model invoice.
+     * <p>
+     * This method takes an entity invoice, typically fetched from the database,
+     * and converts it into a domain model invoice for application use.
+     * If the provided entity is null, the method will return null.
+     *
+     * @param invoiceEntity the entity invoice to be converted
+     * @return the converted domain model invoice, or null if the input is null
+     */
     private Invoice invoiceAdapter(InvoiceEntity invoiceEntity) {
         if (invoiceEntity == null) {
             return null;

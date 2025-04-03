@@ -21,6 +21,10 @@ public class PetAdapter implements PetPort {
     @Autowired
     private PetRepository petRepository;
 
+    /**
+     * Saves a pet to the database.
+     * @param pet the pet to save.
+     */
     @Override
     public void savePet(Pet pet) {
         PetEntity petEntity = this.petAdapter(pet);
@@ -28,11 +32,23 @@ public class PetAdapter implements PetPort {
         pet.setId(petEntity.getId());
     }
 
+    /**
+     * Checks if a pet exists in the database by its ID.
+     *
+     * @param id the ID of the pet to check.
+     * @return true if the pet exists, false otherwise.
+     */
     @Override
     public boolean existPet(long id) {
         return petRepository.existsById(id);
     }
 
+    /**
+     * Finds a pet by its ID.
+     *
+     * @param id the ID of the pet to find.
+     * @return the pet with the given ID, or null if no pet is found.
+     */
     @Override
     public Pet findById(long id) {
         return petRepository.findById(id)
@@ -40,6 +56,12 @@ public class PetAdapter implements PetPort {
                 .orElse(null);
     }
 
+    /**
+     * Finds a list of pets by the given owner ID.
+     *
+     * @param ownerId the owner ID for which pets are to be found.
+     * @return a list of pets associated with the given owner ID.
+     */
     @Override
     public List<Pet> findPetsByOwnerId(Long ownerId) {
         List<PetEntity> petEntities = petRepository.findByOwnerId(ownerId);
@@ -48,6 +70,12 @@ public class PetAdapter implements PetPort {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Adapts a Pet object to a PetEntity object.
+     *
+     * @param pet the Pet object to adapt.
+     * @return the adapted PetEntity object.
+     */
     public PetEntity petAdapter(Pet pet) {
         PetEntity petEntity = new PetEntity();
         PersonEntity petOwner = personRepository.findByDocument(pet.getOwnerDocument());
@@ -66,6 +94,12 @@ public class PetAdapter implements PetPort {
         return petEntity;
     }
 
+    /**
+     * Adapts a PetEntity object to a Pet object.
+     *
+     * @param petEntity the PetEntity object to adapt.
+     * @return the adapted Pet object, or null if the given PetEntity is null.
+     */
     private Pet petAdapter(PetEntity petEntity) {
         if (petEntity == null) {
             return null;

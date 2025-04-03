@@ -15,6 +15,13 @@ public class LoginService {
     @Getter
     private User currentLoggedUser = null;
 
+    /**
+     * Logs in a user by validating the provided username and password.
+     *
+     * @param user The user object containing the username and password to validate.
+     * @return The validated User object if the login is successful.
+     * @throws Exception If the username or password is invalid.
+     */
     public User login(User user) throws Exception {
         User userValidate = userPort.findByUserName(user);
         if (userValidate == null) {

@@ -25,11 +25,22 @@ public class UserAdapter implements UserPort {
     @Autowired
     private PersonAdapter personAdapter;
 
+    /**
+     * Validates that a given username does not already exist in the database.
+     *
+     * @param userName The username to validate.
+     * @return True if the username does not exist, false otherwise.
+     */
     @Override
     public boolean existUserName(String userName) {
         return userRepository.existsByUserName(userName);
     }
 
+    /**
+     * Saves a user to the database.
+     *
+     * @param user The user to save.
+     */
     @Override
     public void saveUser(User user) {
         UserEntity userEntity = userEntityAdapter(user);
@@ -38,6 +49,12 @@ public class UserAdapter implements UserPort {
         user.setId(userEntity.getUserId());
     }
 
+    /**
+     * Finds a user by the associated person entity.
+     *
+     * @param person The person object used to find the corresponding user.
+     * @return The User object associated with the given person, or null if no user is found.
+     */
     @Override
     public User findByPersonId(Person person) {
         PersonEntity personEntity = personAdapter.personAdapter(person);
@@ -46,12 +63,24 @@ public class UserAdapter implements UserPort {
         return userAdapter(userEntity);
     }
 
+    /**
+     * Finds a user in the database by their username.
+     *
+     * @param user The user object containing the username to search for.
+     * @return The User object matching the given username, or null if no user is found.
+     */
     @Override
     public User findByUserName(User user) {
         UserEntity userEntity = userRepository.findByUserName(user.getUserName());
         return userAdapter(userEntity);
     }
 
+    /**
+     * Converts a UserEntity object to a User object.
+     *
+     * @param userEntity The UserEntity object to convert.
+     * @return The converted User object, or null if the input is null.
+     */
     private User userAdapter(UserEntity userEntity) {
         if (userEntity == null) {
             return null;
@@ -69,6 +98,12 @@ public class UserAdapter implements UserPort {
         return user;
     }
 
+    /**
+     * Converts a User object to a UserEntity object.
+     *
+     * @param user The User object to convert.
+     * @return The converted UserEntity object, or null if the input is null.
+     */
     private UserEntity userEntityAdapter(User user) {
         PersonEntity personEntity = new PersonEntity();
         personEntity.setId(user.getId());

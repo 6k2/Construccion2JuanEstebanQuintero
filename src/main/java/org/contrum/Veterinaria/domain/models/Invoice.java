@@ -22,12 +22,13 @@ public class Invoice {
 
     private long timestamp;
 
+
     public String getFormattedTimeStampText() {
         return new SimpleDateFormat("dd/MM/yyyy HH:mm", new Locale("es", "ES")).format(new Date(this.getTimestamp()));
     }
 
-    public String getFormattedTimeStampBars() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", new Locale("es", "ES"));
-        return formatter.format(new Date(timestamp));
-    }
+    //public String getFormattedTimeStampBars() {
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", new Locale("es", "ES"));
+        //return formatter.format(new Date(timestamp));
+    //}
 }
