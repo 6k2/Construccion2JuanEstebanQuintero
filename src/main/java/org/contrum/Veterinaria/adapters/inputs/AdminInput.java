@@ -51,7 +51,7 @@ public class AdminInput implements InputPort {
                 "3. Listar vendedores",
                 "4. Listar medicos veterinarios",
                 "",
-                "X. Cerrar seción"
+                "X. Cerrar sesión"
         );
 
         String choice = Printer.read().toLowerCase();

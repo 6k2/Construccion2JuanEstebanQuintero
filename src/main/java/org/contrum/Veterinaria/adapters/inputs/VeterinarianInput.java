@@ -221,13 +221,13 @@ public class VeterinarianInput extends BaseStoreManagerInput {
     private void createClinicalRecord() throws Exception {
         Pet pet = this.findPet();
 
-        // Para evitar pedir el ID del veterinario, buscamos la ID del usuario actual que ha iniciado seción en LoginService
+        // Para evitar pedir el ID del veterinario, buscamos la ID del usuario actual que ha iniciado sesión en LoginService
         // Tiene que ser un veterinario, ya que de lo contrario no podría haber accedido a este menú, pero retornamos un error
         // Inesperado en caso de que no lo sea.
         long currentUserId = loginService.getCurrentLoggedUser().getId();
         Veterinarian veterinarian = veterinarianPort.findById(currentUserId);
         if (veterinarian == null) {
-            throw new Exception("Se ha producido un error inesperado ¿Has iniciado seción como un veterinario?");
+            throw new Exception("Se ha producido un error inesperado ¿Has iniciado sesión como un veterinario?");
         }
 
         Printer.print("Ingrese la razón de la consulta");
@@ -276,14 +276,14 @@ public class VeterinarianInput extends BaseStoreManagerInput {
         }
 
         if (veterinarian == null) {
-            // Para evitar pedir el ID del veterinario, buscamos la ID del usuario actual que ha iniciado seción en LoginService
+            // Para evitar pedir el ID del veterinario, buscamos la ID del usuario actual que ha iniciado sesión en LoginService
             // Tiene que ser un veterinario, ya que de lo contrario no podría haber accedido a este menú, pero retornamos un error
             // Inesperado en caso de que no lo sea.
             long currentUserId = loginService.getCurrentLoggedUser().getId();
 
             veterinarian = veterinarianPort.findById(currentUserId);
             if (veterinarian == null) {
-                throw new Exception("Se ha producido un error inesperado ¿Has iniciado seción como un veterinario?");
+                throw new Exception("Se ha producido un error inesperado ¿Has iniciado sesión como un veterinario?");
             }
         }
 

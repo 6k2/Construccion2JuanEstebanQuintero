@@ -17,7 +17,7 @@ public class LoginService {
 
     public User login(User user) throws Exception {
         User userValidate = userPort.findByUserName(user);
-        if (user == null) {
+        if (userValidate == null) {
             throw new Exception("Usuario o contraseña invalido");
         }
 
