@@ -14,4 +14,8 @@ public class OrderValidator extends SimpleValidator {
     public String medicamentValidator(String value) throws Exception {
         return stringValidator(value, "medicamento recetado");
     }
+
+    public long idValidator(String value) throws Exception {
+        return longValidator(value, "id de la orden");
+    }
 }

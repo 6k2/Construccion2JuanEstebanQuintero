@@ -84,4 +84,8 @@ public class PetValidator extends SimpleValidator {
     public int ageValidator(String value) throws Exception {
         return intValidator(value, "edad de la mascota");
     }
+
+    public long idValidator(String value) throws Exception {
+        return longValidator(value, "id de la mascota");
+    }
 }

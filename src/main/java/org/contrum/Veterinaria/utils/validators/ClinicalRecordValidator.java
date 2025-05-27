@@ -28,4 +28,8 @@ public class ClinicalRecordValidator extends SimpleValidator {
     public String reasonValidator(String value) throws Exception {
         return stringValidator(value, "razón de la consulta");
     }
+
+    public long idValidator(String value) throws Exception {
+        return longValidator(value, "id del reporte clinico");
+    }
 }

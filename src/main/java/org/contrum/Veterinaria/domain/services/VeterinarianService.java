@@ -7,9 +7,13 @@ import org.contrum.Veterinaria.domain.models.ClinicalRecord;
 import org.contrum.Veterinaria.domain.models.Order;
 import org.contrum.Veterinaria.domain.models.Person;
 import org.contrum.Veterinaria.domain.models.Pet;
+import org.contrum.Veterinaria.exceptions.BusinessException;
+import org.contrum.Veterinaria.exceptions.NotFoundException;
 import org.contrum.Veterinaria.ports.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -47,8 +51,12 @@ public class VeterinarianService {
      * @throws Exception if there is no person with the given document.
      */
     public void registerPet(Pet pet) throws Exception {
-        if (!personPort.existPerson(pet.getOwnerDocument())) {
-            throw new Exception("No existe una persona para asignar a la mascota con esa cedula!");
+        Person person = personPort.findByDocument(pet.getOwnerDocument());
+        if (person == null) {
+            throw new NotFoundException("No existe una persona para asignar a la mascota con esa cedula!");
+        }
+        if (person.getRole() != Person.Role.PET_OWNER) {
+            throw new BusinessException("La persona con el documento " + pet.getOwnerDocument() + " no es un propietario de mascota.");
         }
 
         petPort.savePet(pet);
@@ -76,11 +84,11 @@ public class VeterinarianService {
      */
     public void createClinicalRecord(ClinicalRecord record) throws Exception {
         if (!veterinarianPort.existVeterinarianById(record.getVeterinarianId())) {
-            throw new Exception("No existe un veterinario con esa cedula!");
+            throw new NotFoundException("No existe un veterinario con esa cedula!");
         }
 
         if (!petPort.existPet(record.getPetId())) {
-            throw new Exception("No existe una mascota con esa ID!");
+            throw new NotFoundException("No existe una mascota con esa ID!");
         }
 
         record.setTimestamp(System.currentTimeMillis());
@@ -113,5 +121,71 @@ public class VeterinarianService {
 
         order.setTimestamp(System.currentTimeMillis());
         orderPort.saveOrder(order);
+    }
+
+    public void cancelOrder(Order order) {
+        order.setCancelled(true);
+        orderPort.saveOrder(order);
+    }
+
+    public Person getPetOwner(long document) throws NotFoundException {
+        Person person = personPort.findByDocument(document);
+        if (person == null) {
+            throw new NotFoundException("No se encontró un propietario de mascota con el documento: " + document);
+        }
+        if (person.getRole() != Person.Role.PET_OWNER) {
+            throw new NotFoundException("La persona con el documento " + document + " no es un propietario de mascota.");
+        }
+
+        return person;
+    }
+
+    public Pet getPet(long id) throws NotFoundException {
+        Pet pet = petPort.findById(id);
+        if (pet == null) {
+            throw new NotFoundException("No se encontró una mascota con la ID: " + id);
+        }
+        return pet;
+    }
+
+    public List<Pet> getPetsByOwnerId(long id) throws NotFoundException {
+        List<Pet> pets = petPort.findPetsByOwnerId(id);
+        if (pets == null) {
+            throw new NotFoundException("No se encontraron mascotas para el propietario con la ID: " + id);
+        }
+        return pets;
+    }
+
+    public ClinicalRecord getClinicalRecord(long id) throws NotFoundException {
+        ClinicalRecord record = clinicalRecordPort.findById(id);
+        if (record == null) {
+            throw new NotFoundException("No se encontró un registro clínico con la ID: " + id);
+        }
+        return record;
+    }
+
+    public List<ClinicalRecord> getClinicalRecordsByPetId(long petId) throws NotFoundException {
+        List<ClinicalRecord> records = clinicalRecordPort.findByPetId(petId);
+        if (records == null || records.isEmpty()) {
+            throw new NotFoundException("No se encontraron registros clínicos para la mascota con la ID: " + petId);
+        }
+        return records;
+    }
+
+    public Order getOrderById(long id) throws NotFoundException {
+        Order order = orderPort.findById(id);
+        if (order == null) {
+            throw new NotFoundException("No se encontró una orden con la ID: " + id);
+        }
+
+        return order;
+    }
+
+    public List<Order> getOrdersByPetId(long petId) throws NotFoundException {
+        List<Order> orders = orderPort.findByPetId(petId);
+        if (orders == null || orders.isEmpty()) {
+            throw new NotFoundException("No se encontraron órdenes para la mascota con la ID: " + petId);
+        }
+        return orders;
     }
 }

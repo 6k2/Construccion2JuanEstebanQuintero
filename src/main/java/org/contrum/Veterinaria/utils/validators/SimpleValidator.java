@@ -1,5 +1,6 @@
 package org.contrum.Veterinaria.utils.validators;
 
+import org.contrum.Veterinaria.exceptions.InputsException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,9 +14,9 @@ public class SimpleValidator {
      * @return the validated string if it is not null or empty
      * @throws Exception if the string is null or empty
      */
-    public String stringValidator(String value, String element) throws Exception {
+    public String stringValidator(String value, String element) throws InputsException {
         if (value == null || value.equals("")) {
-            throw new Exception(element + " no tiene un valor valido");
+            throw new InputsException(element + " no tiene un valor valido");
         }
         return value;
     }
@@ -28,11 +29,16 @@ public class SimpleValidator {
      * @return the validated long value if it is valid
      * @throws Exception if the string is not a valid long value
      */
-    public Long longValidator(String value, String element) throws Exception {
+    public Long longValidator(String value, String element) throws InputsException {
         try {
-            return Long.parseLong(stringValidator(value, element));
+            long result = Long.parseLong(stringValidator(value, element));
+            if (result < 0) {
+                throw new InputsException(element + " no puede ser un valor negativo");
+            }
+
+            return result;
         } catch (Exception e) {
-            throw new Exception(element + " debe ser un valor numerico");
+            throw new InputsException(element + " debe ser un valor numerico");
         }
     }
 
@@ -44,11 +50,11 @@ public class SimpleValidator {
      * @return the validated int value if it is valid
      * @throws Exception if the string is not a valid int value
      */
-    public Integer intValidator(String value, String element) throws Exception {
+    public Integer intValidator(String value, String element) throws InputsException {
         try {
             return Integer.parseInt(stringValidator(value, element));
         } catch (Exception e) {
-            throw new Exception(element + " debe ser un valor numerico");
+            throw new InputsException(element + " debe ser un valor numerico");
         }
     }
 
@@ -62,11 +68,11 @@ public class SimpleValidator {
      */
 
     // doubleValidator (not needed yet)
-    public Double doubleValidator(String value, String element) throws Exception {
+    public Double doubleValidator(String value, String element) throws InputsException {
         try {
             return Double.parseDouble(stringValidator(value, element));
         } catch (Exception e) {
-            throw new Exception(element + " debe ser un valor numerico");
+            throw new InputsException(element + " debe ser un valor numerico");
         }
     }
 }

@@ -13,4 +13,6 @@ public interface SellerPort {
     public void saveSeller(Seller seller);
 
     public Seller findBySellerId(Seller seller);
+
+    public Seller findById(long id);
 }

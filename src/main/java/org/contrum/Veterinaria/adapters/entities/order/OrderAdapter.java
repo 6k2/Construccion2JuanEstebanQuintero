@@ -36,21 +36,9 @@ public class OrderAdapter implements OrderPort {
         order.setId(entity.getId());
     }
 
-    /**
-     * Finds an order by the given order object.
-     * <p>
-     * This method first converts the given order object to an entity,
-     * then searches for the order in the database using the ID
-     * of the entity. If the order is found, it is converted back
-     * to a domain order object and returned. Otherwise, null
-     * is returned.
-     *
-     * @param order the order to be searched
-     * @return the order if found, null otherwise
-     */
     @Override
-    public Order findById(Order order) {
-        OrderEntity userEntity = repository.findById(this.orderAdapter(order));
+    public Order findById(long id) {
+        OrderEntity userEntity = repository.findById(id).orElse(null);
         return orderAdapter(userEntity);
     }
 

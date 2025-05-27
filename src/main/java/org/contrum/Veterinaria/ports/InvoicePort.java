@@ -17,16 +17,7 @@ public interface InvoicePort {
     public void saveInvoice(Invoice invoice);
 
 
-    /**
-     * Finds an invoice by the given invoice object.
-     * <p>
-     * If the invoice exists in the database, this method will return the invoice.
-     * Otherwise, it will return null.
-     *
-     * @param invoice the invoice to be searched
-     * @return the invoice if found, null otherwise
-     */
-    public Invoice findById(Invoice invoice);
+    public Invoice findById(long id);
 
 
     /**

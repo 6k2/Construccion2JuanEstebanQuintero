@@ -33,18 +33,9 @@ public class InvoiceAdapter implements InvoicePort {
         invoice.setId(invoiceEntity.getId());
     }
 
-    /**
-     * Finds an invoice by the given invoice object.
-     * <p>
-     * If the invoice exists in the database, this method will return the invoice.
-     * Otherwise, it will return null.
-     *
-     * @param invoice the invoice to be searched
-     * @return the invoice if found, null otherwise
-     */
     @Override
-    public Invoice findById(Invoice invoice) {
-        return repository.findById(invoice.getId())
+    public Invoice findById(long id) {
+        return repository.findById(id)
                 .map(this::invoiceAdapter)
                 .orElse(null);
     }

@@ -15,16 +15,7 @@ public interface OrderPort {
      */
     public void saveOrder(Order order);
 
-    /**
-     * Finds an order by the given order object.
-     * <p>
-     * If the order exists in the database, this method will return the order.
-     * Otherwise, it will return null.
-     *
-     * @param order the order to be searched
-     * @return the order if found, null otherwise
-     */
-    public Order findById(Order order);
+    public Order findById(long id);
 
     /**
      * Finds a list of orders by the given clinical record ID.

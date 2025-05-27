@@ -8,13 +8,14 @@ package org.contrum.Veterinaria.domain.services;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.contrum.Veterinaria.adapters.entities.invoice.entity.InvoiceEntity;
-import org.contrum.Veterinaria.domain.models.ClinicalRecord;
 import org.contrum.Veterinaria.domain.models.Invoice;
-import org.contrum.Veterinaria.domain.models.Person;
-import org.contrum.Veterinaria.ports.*;
+import org.contrum.Veterinaria.exceptions.NotFoundException;
+import org.contrum.Veterinaria.ports.InvoicePort;
+import org.contrum.Veterinaria.ports.PersonPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -38,4 +39,19 @@ public class SellerService {
         invoicePort.saveInvoice(invoice);
     }
 
+    public Invoice getInvoice(long id) throws NotFoundException {
+        Invoice invoice = invoicePort.findById(id);
+        if (invoice == null) {
+            throw new NotFoundException("No se encontró un registro clínico con la ID: " + id);
+        }
+        return invoice;
+    }
+
+    public List<Invoice> getInvoicesByPetId(long petId) throws NotFoundException {
+        List<Invoice> invoices = invoicePort.findByPetId(petId);
+        if (invoices == null || invoices.isEmpty()) {
+            throw new NotFoundException("No se encontraron facturas para la mascota con ID: " + petId);
+        }
+        return invoices;
+    }
 }

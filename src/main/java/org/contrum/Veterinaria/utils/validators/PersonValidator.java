@@ -29,6 +29,10 @@ public class PersonValidator extends SimpleValidator {
         return longValidator(value, "numero de cedula");
     }
 
+    public long idValidator(String value) throws Exception {
+        return longValidator(value, "id de la persona");
+    }
+
     /**
      * Verifica que la edad de la persona sea un valor numerico entero valido.
      *

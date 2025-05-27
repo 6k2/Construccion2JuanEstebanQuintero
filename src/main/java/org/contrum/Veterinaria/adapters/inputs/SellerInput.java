@@ -66,19 +66,16 @@ public class SellerInput extends BaseStoreManagerInput {
      * message is printed and the menu is displayed again.
      */
     public void menu() {
-        Printer.print(
-                "<border>",
+        Printer.print("<border>",
                 "<center>Menu Vendedor",
-                "<center>Elige una opción",
-                "<border>",
+                "<center>Elige una opción", "<border>",
                 "1. Consultar ordenes medicas de mascota",
                 "2. Consultar ordenes medicas pendientes",
                 "3. Vender medicamento",
                 "4. Vender producto",
                 "5. Consultar facturas",
                 "",
-                "X. Cerrar sesion"
-        );
+                "X. Cerrar sesion");
 
         String choice = Printer.read().toLowerCase();
         try {
@@ -118,15 +115,15 @@ public class SellerInput extends BaseStoreManagerInput {
     }
 
 
-/**
- * Lists all active medical orders for a specific pet.
- *
- * <p>This method retrieves all orders associated with a pet's ID and filters
- * out any that are cancelled. The remaining active orders are displayed to the
- * user in a paginated format.
- *
- * @throws Exception if there are no orders associated with the pet
- */
+    /**
+     * Lists all active medical orders for a specific pet.
+     *
+     * <p>This method retrieves all orders associated with a pet's ID and filters
+     * out any that are cancelled. The remaining active orders are displayed to the
+     * user in a paginated format.
+     *
+     * @throws Exception if there are no orders associated with the pet
+     */
     private void listActiveOrders() throws Exception {
         Pet pet = super.findPet();
 
@@ -137,21 +134,7 @@ public class SellerInput extends BaseStoreManagerInput {
 
         orders.removeIf(order -> order == null || order.isCancelled());
 
-        consolePaginator.paginate(
-                orders,
-                order -> List.of(
-                        "<border>",
-                        " ID: " + order.getId(),
-                        " ID del Registro Clínico: " + order.getRecordId(),
-                        " ID de la Mascota: " + order.getPetId(),
-                        " ID del Dueño: " + order.getPetOwnerId(),
-                        " ID del Veterinario: " + order.getVeterinarianId(),
-                        " Medicamento: " + order.getMedicament(),
-                        " Cancelada: " + order.isCancelled(),
-                        " Fecha: " + order.getFormattedTimeStampText()
-                ),
-                "Listado de órdenes", 10
-        );
+        consolePaginator.paginate(orders, order -> List.of("<border>", " ID: " + order.getId(), " ID del Registro Clínico: " + order.getRecordId(), " ID de la Mascota: " + order.getPetId(), " ID del Dueño: " + order.getPetOwnerId(), " ID del Veterinario: " + order.getVeterinarianId(), " Medicamento: " + order.getMedicament(), " Cancelada: " + order.isCancelled(), " Fecha: " + order.getFormattedTimeStampText()), "Listado de órdenes", 10);
     }
 
     /**
@@ -234,22 +217,7 @@ public class SellerInput extends BaseStoreManagerInput {
         Pet pet = super.findPet();
 
         List<Invoice> invoices = invoicePort.findByPetId(pet.getId());
-        consolePaginator.paginate(
-                invoices,
-                invoice -> List.of(
-                        "<border>",
-                        " ID: " + invoice.getId(),
-                        " ID de la Mascota: " + invoice.getPetId(),
-                        " ID del Dueño: " + invoice.getPetOwnerId(),
-                        " Producto: " + invoice.getProductName(),
-                        " Precio: " + invoice.getPrice(),
-                        " Cantidad: " + invoice.getQuantity(),
-                        " Fecha: " + invoice.getFormattedTimeStampText(),
-                        ""
-                ),
-                "Lista de facturas",
-                10
-        );
+        consolePaginator.paginate(invoices, invoice -> List.of("<border>", " ID: " + invoice.getId(), " ID de la Mascota: " + invoice.getPetId(), " ID del Dueño: " + invoice.getPetOwnerId(), " Producto: " + invoice.getProductName(), " Precio: " + invoice.getPrice(), " Cantidad: " + invoice.getQuantity(), " Fecha: " + invoice.getFormattedTimeStampText(), ""), "Lista de facturas", 10);
     }
 
 
@@ -261,10 +229,10 @@ public class SellerInput extends BaseStoreManagerInput {
      * name, price, and quantity. The invoice is timestamped with
      * the current system time.
      *
-     * @param pet the pet associated with the invoice
+     * @param pet         the pet associated with the invoice
      * @param productName the name of the product being sold
-     * @param price the price of the product
-     * @param quantity the quantity of the product being sold
+     * @param price       the price of the product
+     * @param quantity    the quantity of the product being sold
      * @return the created invoice
      */
     private Invoice createInvoice(Pet pet, String productName, long price, int quantity) {
@@ -289,9 +257,9 @@ public class SellerInput extends BaseStoreManagerInput {
      * price, and quantity. The invoice is timestamped with the
      * current system time.
      *
-     * @param pet the pet associated with the invoice
-     * @param order the order associated with the medicament being sold
-     * @param price the price of the medicament
+     * @param pet      the pet associated with the invoice
+     * @param order    the order associated with the medicament being sold
+     * @param price    the price of the medicament
      * @param quantity the quantity of the medicament being sold
      * @return the created invoice
      */
